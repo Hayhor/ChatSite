@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat</title>
+    <style>
+        /* Add CSS styles for the chat */
+        /* For simplicity, you can enhance the styles as needed */
+        #chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 300px;
+            height: 300px;
+            overflow-y: scroll;
+        }
+        #message-input {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-box"></div>
+    <input type="text" id="message-input" placeholder="Type your message">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const messageInput = document.getElementById('message-input');
+
+        function displayMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.innerText = message;
+            chatBox.appendChild(messageElement);
+        }
+
+        function sendMessage() {
+            const message = messageInput.value;
+            if (message.trim() !== '') {
+                displayMessage('You: ' + message);
+                messageInput.value = '';
+            }
+        }
+
+        // Sample incoming message (you would handle this dynamically based on your chat backend)
+        setTimeout(() => {
+            displayMessage('Friend: Hello there!');
+        }, 2000);
+
+        function sendMessage() {
+    const message = messageInput.value;
+    if (message.trim() !== '') {
+        displayMessage('You: ' + message);
+        messageInput.value = '';
+
+        // Send the message to the backend
+        fetch('https://tc0pa3tgnc.execute-api.us-east-1.amazonaws.com/Build/message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message }),
+        })
+        .then(response => response.json())
+        .then(data => console.log('Message sent:', data))
+        .catch(error => console.error('Error sending message:', error));
+    }
+}
+    </script>
+</body>
+</html>
+
