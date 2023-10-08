@@ -1,0 +1,23 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  AWS_DEFAULT_REGION: "us-east-1"  # Update with your desired AWS region
+
+build:
+  stage: build
+  script:
+    - echo "Building the Lambda function deployment package..."
+    - zip -r deployment-package.zip index.js  # Include your Lambda function code
+  artifacts:
+    paths:
+      - deployment-package.zip
+
+deploy:
+  stage: deploy
+  script:
+    - terraform init
+    - terraform apply -auto-approve
+  only:
+    - master  # Deploy only on commits to the master branch
